@@ -1,0 +1,19 @@
+.subhead h1 {
+    font-size: 54px;
+    color: #333;
+}
+
+.jumbotron h1 {
+    margin-bottom: 9px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.content {
+    padding-top: 50px;
+}

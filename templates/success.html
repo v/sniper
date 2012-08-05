@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+{% block title %} Success | {% endblock %}
+{% block content %}
+    <div class="alert alert-success">
+        Got it! I'll send you a text at {{ form.phone_number.data | safe }} when your class opens up.
+    </div>
+{% endblock %}
