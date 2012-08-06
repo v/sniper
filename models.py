@@ -8,16 +8,16 @@ db = SQLAlchemy(app)
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    department = db.Column(db.String(8))
+    subject = db.Column(db.String(8))
     course_number = db.Column(db.String(8))
     snipes = db.relationship("Snipe", backref="course")
 
-    def __init__(self, department, course_number):
-        self.department = department
+    def __init__(self, subject, course_number):
+        self.subject = subject
         self.course_number = course_number
     
     def __repr__(self):
-        return '%s:%s' % ( self.department, self.course_number)
+        return '%s:%s' % ( self.subject, self.course_number)
 
 class Section(db.Model):
     id = db.Column(db.Integer, primary_key=True)
