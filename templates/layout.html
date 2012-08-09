@@ -8,22 +8,10 @@
         <link rel="stylesheet" style="text/css" href="{{ url_for('static', filename='css/sniper.css') }}" />
     </head>
     <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="#">Rutgers Course Sniper</a>
-                </div>
-            </div>
-            <div class="content container">
-                <header class="jumbotron subhead"> <h1> Schedule Sniper </h1> </header> 
-                <div class="well">
-                    {% block content %}{% endblock %}
-                </div>
+        <div class="content container">
+            <header class="jumbotron subhead"> <h1> <span class="red"> Rutgers </span> Schedule Sniper </h1> </header> 
+            <div class="well">
+                {% block content %}{% endblock %}
             </div>
         </div>
     </body>

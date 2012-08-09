@@ -2,9 +2,12 @@ Flask==0.9
 Flask-SQLAlchemy==0.16
 Flask-WTF==0.8
 Jinja2==2.6
+Mako==0.7.2
+MarkupSafe==0.15
 SQLAlchemy==0.7.8
 WTForms==1.0.1
 Werkzeug==0.8.3
+alembic==0.3.5
 argparse==1.2.1
 requests==0.13.5
 wsgiref==0.1.2

@@ -17,3 +17,7 @@
 .content {
     padding-top: 50px;
 }
+
+span.red {
+    color: #cc0000;
+}
