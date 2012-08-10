@@ -2,11 +2,12 @@
 {% block title %} Welcome to {% endblock %}
 {% block content %}
     {% from "_formhelpers.html" import render_field %}
-    <p> Enter your details below, and I'll text you when your class opens up. </p>
+    <p> Enter your details below, and I'll notify you when your class opens up. </p>
     <form method=post action="/">
         <dl>
+            {{ render_field(form.email) }}
             {{ render_field(form.phone_number) }}
-            {{ render_field(form.department) }}
+            {{ render_field(form.subject) }}
             {{ render_field(form.course_number) }}
             {{ render_field(form.section) }}
         </dl>
