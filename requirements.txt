@@ -8,3 +8,4 @@ Werkzeug==0.8.3
 argparse==1.2.1
 requests==0.13.5
 wsgiref==0.1.2
+flup==1.0.3.dev-20110405
