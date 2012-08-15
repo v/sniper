@@ -1,19 +1,13 @@
 #!/usr/bin/env python
 from flaskext.mail import Message
-from twilio.rest import TwilioRestClient
 
 import urllib
 from models import db, Snipe
 from soc import Soc
-from app import mail, app
+from app import mail, app, client
 import datetime
 
 soc = Soc()
-
-account = "ACd35259f50af04485caaa4c69b779418b"
-token = "a918ed53d5c28a74c0abeb911c7f63af"
-
-client = TwilioRestClient(account=account, token=token)
 
 EMAIL_SENDER = "Course Sniper <sniper@vverma.net>"
 
