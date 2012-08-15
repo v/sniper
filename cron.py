@@ -12,7 +12,7 @@ soc = Soc()
 EMAIL_SENDER = "Course Sniper <sniper@vverma.net>"
 
 def poll(subject):
-    app.logger.info("Polling for %s" % (subject))
+    app.logger.warning("Polling for %s" % (subject))
     courses = soc.get_courses(subject)
 
     open_data = {}
@@ -63,13 +63,13 @@ def notify(snipe):
     db.session.delete(snipe)
     db.session.commit()
 
-    app.logger.info('Notified user: %s about snipe %s' % (snipe.user, snipe))
+    app.logger.warning('Notified user: %s about snipe %s' % (snipe.user, snipe))
 
         
 
 if __name__ == '__main__':
     # get all the courses that should be queried.
-    app.logger.info("----------- Running the Cron %s " % (str(datetime.datetime.now())))
+    app.logger.warning("----------- Running the Cron %s " % (str(datetime.datetime.now())))
     subjects = db.session.query(Snipe.subject).distinct().all()
     for subject in subjects:
         poll(subject)
