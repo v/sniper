@@ -17,7 +17,6 @@ class Soc:
     # For example self.query('/api/subjects.json', { 'keyword': 'Computer Science' })
     def query(self, resource, params):
         params.update(self.params)
-        print params
         
         r = requests.get(self.base_url + resource, params=params) 
 
