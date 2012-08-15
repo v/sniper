@@ -1,4 +1,5 @@
 #!/var/virtualenvs/sniper/bin/python
+""" This is FastCGI process that communicates with lighty"""
 from flup.server.fcgi import WSGIServer
 from app import app
 

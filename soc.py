@@ -1,10 +1,13 @@
 #!/usr/bin/env python
-# This file implements a facade for the Rutgers Schedule of Classes API.
+""" This file implements a facade for the Rutgers Schedule of Classes API."""
 
+# Requests is so awesome
 import requests
 
 class Soc:
+    """ Communicates with Rutgers SOC """
     def __init__(self, campus='NB', semester='92012', level='U,G'):
+        """ We always use certain parameters"""
         self.base_url = 'http://sis.rutgers.edu/soc'
         self.params = {
             'campus': campus,
@@ -13,9 +16,9 @@ class Soc:
         }
 
     
-    # Queries the given resource (a string) with the given parameters.
-    # For example self.query('/api/subjects.json', { 'keyword': 'Computer Science' })
     def query(self, resource, params):
+        """Queries the given resource (a string) with the given parameters.
+        For example self.query('/api/subjects.json', { 'keyword': 'Computer Science' })"""
         params.update(self.params)
         
         r = requests.get(self.base_url + resource, params=params) 
@@ -26,9 +29,11 @@ class Soc:
         raise Exception('You made an invalid request %s: %s' % (r.status_code, r.text))
 
     def get_subjects(self, **kwargs):
+        """ Gives you a list of subjects (departments) """
         return self.query('/subjects.json', params=kwargs)
 
     def get_courses(self, subject):
+        """ Gives you a list of courses in a department """
         return self.query('/courses.json', params={'subject': subject})
 
 if __name__ == '__main__':

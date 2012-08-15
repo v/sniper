@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+""" This represents the cronjob that runs to check for course openings"""
 from flaskext.mail import Message
 
 import urllib
@@ -12,9 +13,13 @@ soc = Soc()
 EMAIL_SENDER = "Course Sniper <sniper@vverma.net>"
 
 def poll(subject):
+    """ Poll a subject for open courses. """
     app.logger.warning("Polling for %s" % (subject))
+    
+    # get all the course data from SOC
     courses = soc.get_courses(subject)
 
+    # build information about which courses/sections are currently open.
     open_data = {}
     for course in courses:
         course_number = course['courseNumber']
@@ -25,15 +30,17 @@ def poll(subject):
                 if course_number in open_data:
                     open_data[course_number].append(section['number'])
 
-    # all of these courses are open
+    # all of these course numbers are open
     open_courses = [course for course, open_sections in open_data.iteritems() if open_sections]
 
+    # Notify people that were looking for these courses
     snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses))
     for snipe in snipes:
         if snipe.section in open_data[snipe.course_number]:
             notify(snipe)
 
 def notify(snipe):
+    """ Notify this snipe that their course is open"""
     course = '%s:%s:%s' % (snipe.subject, snipe.course_number, snipe.section)
 
     if snipe.user.email:
@@ -46,10 +53,12 @@ def notify(snipe):
             'section': snipe.section,
         }
 
+        # build the url for prepopulated form
         url = 'http://sniper.vverma.net/?%s' % (urllib.urlencode(attributes))
 
         email_text = 'A course (%s) that you were watching looks open. Go register for it! If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, url)
 
+        # send out the email
         message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER)
         message.body = email_text
         message.add_recipient(snipe.user.email)
@@ -57,6 +66,7 @@ def notify(snipe):
         mail.send(message)
 
     if snipe.user.phone_number:
+        # send out a text
         text = 'A course (%s) that you were watching looks open. Go register for it! If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, course)
         message = client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
 
