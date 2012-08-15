@@ -53,7 +53,7 @@ class User(db.Model):
             raise ValidationError('I don\'t have a phone number or an email for a user')
 
         self.email = email
-        self.phone_number = phone_number
+        self.phone_number = phone_number.lstrip('+1')
 
     def __repr__(self):
         return '(%s - %s)' % (self.email, self.phone_number)
