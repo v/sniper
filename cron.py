@@ -33,11 +33,14 @@ def poll(subject):
     # all of these course numbers are open
     open_courses = [course for course, open_sections in open_data.iteritems() if open_sections]
 
-    # Notify people that were looking for these courses
-    snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses))
-    for snipe in snipes:
-        if snipe.section in open_data[snipe.course_number]:
-            notify(snipe)
+    if open_courses:
+        # Notify people that were looking for these courses
+        snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses))
+        for snipe in snipes:
+            if snipe.section in open_data[snipe.course_number]:
+                notify(snipe)
+    else:
+        app.logger.warning('Subject "%s" has no open courses' % (subject))
 
 def notify(snipe):
     """ Notify this snipe that their course is open"""
