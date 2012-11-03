@@ -9,4 +9,4 @@ It uses
 * [Requests](http://docs.python-requests.org/en/latest/index.html) for interfacing with the Rutgers Schedule of Classes.
 * [Flask-mail](http://packages.python.org/flask-mail/) for interfacing with Gmail SMTP servers (for email notifications).
 
-You can check out the [live version](http://sniper.vverma.net) if you want to simply use its functionality.
+You can check out the [live version](http://sniper.vverma.net) if you want to simply use its functionality
