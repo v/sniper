@@ -46,7 +46,7 @@ def poll(subject, result=False):
 
     if open_courses:
         # Notify people that were looking for these courses
-        snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses))
+        snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses), Snipe.subject==subject)
         for snipe in snipes:
             if snipe.section in open_data[snipe.course_number]:
                 print "FUCK LIFE\n\n"
