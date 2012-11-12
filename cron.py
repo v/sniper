@@ -7,7 +7,6 @@ from models import db, Snipe
 from soc import Soc
 from app import mail, app, client
 import datetime
-import json
 
 soc = Soc()
 
@@ -49,9 +48,6 @@ def poll(subject, result=False):
         snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses), Snipe.subject==str(subject))
         for snipe in snipes:
             if snipe.section in open_data[snipe.course_number]:
-                print "FUCK LIFE\n\n"
-                print json.dumps(courses)
-                print "STOP FUCKING\n\n"
                 notify(snipe)
     else:
         app.logger.warning('Subject "%s" has no open courses' % (subject))
