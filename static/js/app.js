@@ -34,11 +34,18 @@ $(function() {
     $('#sniper-test').button().click(function() {
         var that = $(this);
         that.button('loading');
-        $.getJSON('/test', {}, function(response) {
-            that.button('reset');
-            if(response.success) {
-                alert('Yep looks to me like it does. Send me email at sniper@vverma.net if you think it doesn\'t.');
-            } else {
+        $.ajax({
+            url: '/test', 
+            success: function(response) {
+                that.button('reset');
+                if(response.success) {
+                    alert('Yep looks to me like it does. Send me email at sniper@vverma.net if you think it doesn\'t.');
+                } else {
+                    alert('Looks like something\'s wrong. I\'ll work on fixing it asap.');
+                }
+            },
+            dataType: 'json',
+            error: function(response) {
                 alert('Looks like something\'s wrong. I\'ll work on fixing it asap.');
             }
         });
