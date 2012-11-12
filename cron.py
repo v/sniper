@@ -50,7 +50,7 @@ def poll(subject, result=False):
         for snipe in snipes:
             if snipe.section in open_data[snipe.course_number]:
                 print "FUCK LIFE\n\n"
-                print json.dumps(open_data)
+                print json.dumps(courses)
                 print "STOP FUCKING\n\n"
                 notify(snipe)
     else:
