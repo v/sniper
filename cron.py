@@ -12,7 +12,7 @@ soc = Soc()
 
 EMAIL_SENDER = "Course Sniper <sniper@vverma.net>"
 
-def poll(subject):
+def poll(subject, result=False):
     """ Poll a subject for open courses. """
     app.logger.warning("Polling for %s" % (subject))
     
@@ -23,15 +23,25 @@ def poll(subject):
     open_data = {}
     for course in courses:
         course_number = course['courseNumber']
+
+        # remove leading zeroes
+        if course_number.isdigit():
+            course_number = str(int(course_number))
+
         open_data[course_number] = []
         for section in course['sections']:
+            section_number = section['number']
+            if section_number.isdigit():
+                section_number = str(int(section_number))
             # section is open
             if section['openStatus']:
-                if course_number in open_data:
-                    open_data[course_number].append(section['number'])
+                open_data[course_number].append(section_number)
 
     # all of these course numbers are open
     open_courses = [course for course, open_sections in open_data.iteritems() if open_sections]
+
+    if result:
+        return open_data
 
     if open_courses:
         # Notify people that were looking for these courses
@@ -62,8 +72,9 @@ def notify(snipe):
         email_text = 'A course (%s) that you were watching looks open. Go register for it! If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, url)
 
         # send out the email
-        message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER)
+        message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER, bcc=["vaibhav2614+sniper@gmail.com"])
         message.body = email_text
+        message.add_recipient(snipe.user.email)
         message.add_recipient(snipe.user.email)
 
         mail.send(message)

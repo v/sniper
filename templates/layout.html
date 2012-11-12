@@ -4,6 +4,7 @@
         <title> {% block title %} {% endblock %}Rutgers Course Sniper </title>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
         <link rel="stylesheet" style="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
         <link rel="stylesheet" style="text/css" href="{{ url_for('static', filename='css/sniper.css') }}" />
         <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
@@ -24,6 +25,9 @@
             <header class="jumbotron subhead"> <h1> <span class="red"> Rutgers </span> Schedule Sniper </h1> </header> 
             <div class="well">
                 {% block content %}{% endblock %}
+            </div>
+            <div>
+                <button class="btn btn-info" id="sniper-test" data-loading-text="Testing..."> Does Sniper currently work? </button>
             </div>
             <footer> Feedback? Please email sniper@<span style="display:none">CantParseMeBro</span>vverma.net. Created by <a href="http://vverma.net"> Vaibhav Verma</a>, inspired by <a href="http://abe.is">Abe Stanway</a> </footer>
         </div>

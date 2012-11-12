@@ -1,15 +1,18 @@
 {% extends 'layout.html' %}
 {% block content %}
+    <script type="text/javascript">
+        var subjects = {{ subjects|tojson|safe }};
+    </script>
     {% from "_formhelpers.html" import render_field %}
-    <p> Enter your details below, and I'll notify you when your class opens up. </p>
+    <p> Enter your details below, and I'll notify you when your class opens up. Sniper is currently watching courses for Spring 2013 on the Rutgers New Brunswick campus. </p>
     <form method=post action="/">
         <dl>
             {{ render_field(form.email) }}
             {{ render_field(form.phone_number) }}
-            {{ render_field(form.subject) }}
+            {{ render_field(form.subject, placeholder="Department Number. Ex: '640' for Math") }}
             {{ render_field(form.course_number) }}
             {{ render_field(form.section) }}
         </dl>
-        <button class="btn btn-primary" type="submit">Snipe</button>
     </form>
+    <button class="btn btn-primary" type="submit">Snipe</button>
 {% endblock %}

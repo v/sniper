@@ -8,7 +8,9 @@ from models import Snipe, db, User
 from twilio.rest import TwilioRestClient
 from flaskext.mail import Mail
 from secrets import mail_username, mail_password, twilio_account, twilio_token
+from soc import Soc
 import re
+import json
 
 import logging
 from logging import Formatter, FileHandler
@@ -40,7 +42,7 @@ class SnipeForm(Form):
     """ Represents the Snipe form on the homepage. """
     email = TextField('Email', [validators.Email()])
     phone_number = TextField('Phone Number', [validators.Length(min=9, max=12), validators.NumberRange()])
-    subject = TextField('Subject', [validators.Length(min=2, max=4), validators.NumberRange()])
+    subject = TextField('Subject')
     course_number = TextField('Course Number', [validators.Length(min=2, max=4), validators.NumberRange()])
     section = TextField('Section', [validators.Length(min=1, max=4)])
 
@@ -56,6 +58,26 @@ class SnipeForm(Form):
             return True
         raise StopValidation('You must either enter a phone number or an email address.')
 
+    def validate_subject(form, field):
+        if not form.subject.data.isdigit():
+            m = re.search('(\d+)', form.subject.data)
+            if m:
+                form.subject.data = m.group(1)
+            else:
+                raise StopValidation('Please enter a valid subject')
+        return True
+
+    def validate_course_number(form, field):
+        # course numbers sometime have leading zeroes
+        if form.course_number.data.isdigit():
+            form.course_number.data = str(int(form.course_number.data))
+        return True
+    
+    def validate_section(form, field):
+        if form.section.data.isdigit():
+            form.section.data = str(int(form.section.data))
+        return True
+
     def save(self):
         """ Saves to SQLAlchemy User and Snipe models """
         
@@ -70,6 +92,11 @@ class SnipeForm(Form):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     """ Handles the home page rendering."""
+
+    soc = Soc()
+    subjects = soc.get_subjects()
+    print subjects
+
     form = SnipeForm(request.form)
     if request.method == 'POST' and form.validate():
         form.save()
@@ -77,7 +104,8 @@ def home():
     if not request.form:
         # this trick allows us to prepopulate entries using links sent out in emails.
         form = SnipeForm(request.args)
-    return render_template('home.html', form=form)
+     
+    return render_template('home.html', form=form, subjects=subjects)
 
 @app.route('/twilio_callback', methods=['GET', 'POST'])
 def twilio_callback():
@@ -119,6 +147,49 @@ def twilio_callback():
 
         return 'Saddness in the world'
 
+@app.route('/test', methods=['GET', 'POST'])
+def ajaxtest():
+    result = {
+        'success': test(),
+    }
+
+    if not result['success']:
+        from cron import EMAIL_SENDER
+        from flaskext.mail import Message
+
+        message = Message('Sniper tests are failing', sender=EMAIL_SENDER)
+        message.body = 'FIX IT'
+        message.add_recipient('vaibhav2614@gmail.com')
+        mail.send(message)
+
+    return json.dumps(result)
+
+def test():
+    from cron import poll
+
+    soc = Soc()
+    math_courses = soc.get_courses(640)
+    open_courses = poll(640, result = True)
+
+    success = True
+
+    for math_course in math_courses:
+        course_number = math_course['courseNumber']
+
+        if course_number.isdigit():
+            course_number = str(int(course_number))
+
+        for section in math_course['sections']:
+            section_number = section['number']
+            if section_number.isdigit():
+                section_number = str(int(section_number))
+
+            if section['openStatus'] and not section_number in open_courses[course_number]:
+                raise 'Test failed'
+                success = False
+
+    return success
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    test()
+    app.run(host='0.0.0.0', debug=True)

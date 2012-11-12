@@ -25,3 +25,11 @@ span.red {
 footer {
     font-size: 16px;
 }
+
+input[type="text"] {
+    width: 300px;
+}
+
+#sniper-test {
+    margin: 10px;
+}
