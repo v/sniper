@@ -13,6 +13,9 @@ alembic==0.3.5
 argparse==1.2.1
 blinker==1.2
 chardet==1.1
+## FIXME: could not find svn URL in dependency_links for this package:
+flup==1.0.3.dev-20110405
+gunicorn==0.15.0
 httplib2==0.7.4
 lamson==1.1
 lockfile==0.9.1
@@ -22,4 +25,3 @@ python-daemon==1.6
 requests==0.13.5
 twilio==3.3.10
 wsgiref==0.1.2
-flup==1.0.3.dev-20110405
