@@ -9,6 +9,7 @@ from twilio.rest import TwilioRestClient
 from flaskext.mail import Mail
 from secrets import mail_username, mail_password, twilio_account, twilio_token
 from soc import Soc
+from werkzeug.contrib.fixers import ProxyFix
 import re
 import json
 
@@ -31,6 +32,8 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = mail_username
 app.config['MAIL_PASSWORD'] = mail_password
+
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 mail = Mail(app)
 
