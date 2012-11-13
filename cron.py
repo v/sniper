@@ -96,4 +96,4 @@ if __name__ == '__main__':
     app.logger.warning("----------- Running the Cron %s " % (str(datetime.datetime.now())))
     subjects = db.session.query(Snipe.subject).distinct().all()
     for subject in subjects:
-        poll(subject)
+        poll(subject[0])
