@@ -98,7 +98,6 @@ def home():
 
     soc = Soc()
     subjects = soc.get_subjects()
-    print subjects
 
     form = SnipeForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -173,6 +172,8 @@ def test():
     soc = Soc()
     math_courses = soc.get_courses(640)
     open_courses = poll(640, result = True)
+    for dept, sections in open_courses.iteritems():
+        open_courses[dept] = [section.number for section in sections]
 
     success = True
 
@@ -188,7 +189,7 @@ def test():
                 section_number = str(int(section_number))
 
             if section['openStatus'] and not section_number in open_courses[course_number]:
-                raise 'Test failed'
+                raise Exception('Test failed')
                 success = False
 
     return success

@@ -7,10 +7,13 @@ from models import db, Snipe
 from soc import Soc
 from app import mail, app, client
 import datetime
+from collections import namedtuple
 
 soc = Soc()
 
 EMAIL_SENDER = "Course Sniper <sniper@vverma.net>"
+
+Section = namedtuple('Section', ['number', 'index'])
 
 def poll(subject, result=False):
     """ Poll a subject for open courses. """
@@ -35,7 +38,7 @@ def poll(subject, result=False):
                 section_number = str(int(section_number))
             # section is open
             if section['openStatus']:
-                open_data[course_number].append(section_number)
+                open_data[course_number].append(Section(section_number, section['index']))
 
     # all of these course numbers are open
     open_courses = [course for course, open_sections in open_data.iteritems() if open_sections]
@@ -47,12 +50,13 @@ def poll(subject, result=False):
         # Notify people that were looking for these courses
         snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses), Snipe.subject==str(subject))
         for snipe in snipes:
-            if snipe.section in open_data[snipe.course_number]:
-                notify(snipe)
+            for section in open_data[snipe.course_number]:
+                if section.number == snipe.section:
+                    notify(snipe, section.index)
     else:
         app.logger.warning('Subject "%s" has no open courses' % (subject))
 
-def notify(snipe):
+def notify(snipe, index):
     """ Notify this snipe that their course is open"""
     course = '%s:%s:%s' % (snipe.subject, snipe.course_number, snipe.section)
 
@@ -69,7 +73,9 @@ def notify(snipe):
         # build the url for prepopulated form
         url = 'http://sniper.vverma.net/?%s' % (urllib.urlencode(attributes))
 
-        email_text = 'A course (%s) that you were watching looks open. Go register for it! If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, url)
+        register_url = 'https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=12013&indexList=%s' % (index)
+
+        email_text = 'A course (%s) that you were watching looks open. Its index number is %s. Click the link below to register for it!\n\n %s \n\n If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, index, register_url, url)
 
         # send out the email
         message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER, bcc=["vaibhav2614+sniper@gmail.com"])
@@ -81,7 +87,7 @@ def notify(snipe):
 
     if snipe.user.phone_number:
         # send out a text
-        text = 'A course (%s) that you were watching looks open. Go register for it! If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, course)
+        text = 'A course (%s) (Index %s) that you were watching looks open. If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, index, course)
         message = client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
 
     db.session.delete(snipe)
