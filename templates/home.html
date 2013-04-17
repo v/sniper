@@ -4,7 +4,7 @@
         var subjects = {{ subjects|tojson|safe }};
     </script>
     {% from "_formhelpers.html" import render_field %}
-    <p> Enter your details below, and I'll notify you when your class opens up. Sniper is currently watching courses for Spring 2013 on the Rutgers New Brunswick campus. </p>
+    <p> Enter your details below, and I'll notify you when your class opens up. Sniper is currently watching courses for Fall 2013 on the Rutgers New Brunswick campus. </p>
     <form method=post action="/">
         <dl>
             {{ render_field(form.email) }}
