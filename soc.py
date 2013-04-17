@@ -6,7 +6,7 @@ import requests
 
 class Soc:
     """ Communicates with Rutgers SOC """
-    def __init__(self, campus='NB', semester='12013', level='U,G'):
+    def __init__(self, campus='NB', semester='92013', level='U,G'):
         """ We always use certain parameters"""
         self.base_url = 'http://sis.rutgers.edu/soc'
         self.params = {
