@@ -87,8 +87,11 @@ def notify(snipe, index):
 
     if snipe.user.phone_number:
         # send out a text
-        text = 'A course (%s) (Index %s) that you were watching looks open. If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, index, course)
-        message = client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
+        try: 
+            text = 'A course (%s) (Index %s) that you were watching looks open. If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, index, course)
+            message = client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
+        except Exception as e:
+            app.logger.warning('Looks like a phone number is invalid')
 
     db.session.delete(snipe)
     db.session.commit()
