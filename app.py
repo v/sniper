@@ -25,14 +25,6 @@ file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
 app.logger.addHandler(file_handler)
 
-# Set up gmail SMTP connection for sending mail
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] =  587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = mail_username
-app.config['MAIL_PASSWORD'] = mail_password
-
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 mail = Mail(app)
