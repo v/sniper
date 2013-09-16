@@ -67,7 +67,7 @@ class SnipeForm(Form):
         if form.course_number.data.isdigit():
             form.course_number.data = str(int(form.course_number.data))
         return True
-    
+
     def validate_section(form, field):
         if form.section.data.isdigit():
             form.section.data = str(int(form.section.data))
@@ -75,7 +75,7 @@ class SnipeForm(Form):
 
     def save(self):
         """ Saves to SQLAlchemy User and Snipe models """
-        
+
         # Remove '+1's from phone numbers
         self.phone_number.data = self.phone_number.data.lstrip('+1')
         snipe = Snipe.create(self.phone_number.data, self.email.data, self.subject.data, self.course_number.data, self.section.data)
@@ -98,14 +98,15 @@ def home():
     if not request.form:
         # this trick allows us to prepopulate entries using links sent out in emails.
         form = SnipeForm(request.args)
-     
-    return render_template('home.html', form=form, subjects=subjects)
+
+    #return render_template('home.html', form=form, subjects=subjects)
+    return render_template('down.html', form=form, subjects=subjects)
 
 @app.route('/twilio_callback', methods=['GET', 'POST'])
 def twilio_callback():
     """ Handles the callback from twilio """
     course_info = request.form['Body']
-    
+
     # Regex to search for subject:course_num:section in the text message.
     m = re.search('([\w\d]+):([\w\d]+):([\w\d]+)', course_info)
     if m:
