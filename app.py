@@ -27,6 +27,12 @@ app.logger.addHandler(file_handler)
 
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
+app.config['MAIL_SERVER'] = 'smtp.sendgrid.net'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = mail_username
+app.config['MAIL_PASSWORD'] = mail_password
+
 mail = Mail(app)
 
 # Set up a twilio client for sending texts out
