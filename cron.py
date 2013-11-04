@@ -18,7 +18,7 @@ Section = namedtuple('Section', ['number', 'index'])
 def poll(subject, result=False):
     """ Poll a subject for open courses. """
     app.logger.warning("Polling for %s" % (subject))
-    
+
     # get all the course data from SOC
     courses = soc.get_courses(subject)
 
@@ -73,7 +73,7 @@ def notify(snipe, index):
         # build the url for prepopulated form
         url = 'http://sniper.vverma.net/?%s' % (urllib.urlencode(attributes))
 
-        register_url = 'https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=92013&indexList=%s' % (index)
+        register_url = 'https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=12014&indexList=%s' % (index)
 
         email_text = 'A course (%s) that you were watching looks open. Its index number is %s. Click the link below to register for it!\n\n %s \n\n If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, index, register_url, url)
 
@@ -87,7 +87,7 @@ def notify(snipe, index):
 
     if snipe.user.phone_number:
         # send out a text
-        try: 
+        try:
             text = 'A course (%s) (Index %s) that you were watching looks open. If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, index, course)
             message = client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
         except Exception as e:
@@ -98,7 +98,7 @@ def notify(snipe, index):
 
     app.logger.warning('Notified user: %s about snipe %s' % (snipe.user, snipe))
 
-        
+
 
 if __name__ == '__main__':
     # get all the courses that should be queried.

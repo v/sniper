@@ -6,7 +6,7 @@ import requests
 
 class Soc:
     """ Communicates with Rutgers SOC """
-    def __init__(self, campus='NB', semester='92013', level='U,G'):
+    def __init__(self, campus='NB', semester='12014', level='U,G'):
         """ We always use certain parameters"""
         self.base_url = 'http://sis.rutgers.edu/soc'
         self.params = {
@@ -14,19 +14,19 @@ class Soc:
             'semester': semester,
             'level': level,
         }
-        
+
         # Spoof the user agent for good measure
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.60 Safari/537.1',
         }
 
-    
+
     def query(self, resource, params):
         """Queries the given resource (a string) with the given parameters.
         For example self.query('/api/subjects.json', { 'keyword': 'Computer Science' })"""
         params.update(self.params)
-        
-        r = requests.get(self.base_url + resource, params=params, headers=self.headers) 
+
+        r = requests.get(self.base_url + resource, params=params, headers=self.headers)
 
         if r.status_code == requests.codes.ok:
             return r.json

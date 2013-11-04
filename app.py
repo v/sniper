@@ -99,8 +99,7 @@ def home():
         # this trick allows us to prepopulate entries using links sent out in emails.
         form = SnipeForm(request.args)
 
-    #return render_template('home.html', form=form, subjects=subjects)
-    return render_template('down.html', form=form, subjects=subjects)
+    return render_template('home.html', form=form, subjects=subjects)
 
 @app.route('/twilio_callback', methods=['GET', 'POST'])
 def twilio_callback():
