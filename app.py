@@ -139,13 +139,13 @@ def twilio_callback():
         text = "I'm on it. Watching %s:%s:%s for you." % (subject, course_number, section)
         client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
 
-        return 'Lovely job Twilio!'
+        return '<Response></Response'
     else:
         # log errors.
         app.logger.error('There is sadness with text messages')
         app.logger.error('Message: %s Other %s' % (request.form['Body'], str(request.form)))
 
-        return 'Saddness in the world'
+        return '<Response></Response>'
 
 @app.route('/test', methods=['GET', 'POST'])
 def ajaxtest():
