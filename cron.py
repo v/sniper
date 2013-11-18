@@ -5,7 +5,7 @@ from flaskext.mail import Message
 import urllib
 from models import db, Snipe
 from soc import Soc
-from app import mail, app, client
+from app import mail, app
 import datetime
 from collections import namedtuple
 
@@ -64,7 +64,6 @@ def notify(snipe, index):
 
         attributes = {
             'email': snipe.user.email,
-            'phone_number': snipe.user.phone_number,
             'subject': snipe.subject,
             'course_number': snipe.course_number,
             'section': snipe.section,
@@ -84,14 +83,6 @@ def notify(snipe, index):
         message.add_recipient(snipe.user.email)
 
         mail.send(message)
-
-    if snipe.user.phone_number:
-        # send out a text
-        try:
-            text = 'A course (%s) (Index %s) that you were watching looks open. If you don\'t get in, reply back with "%s" and I\'ll continue watching it' % (course, index, course)
-            message = client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
-        except Exception as e:
-            app.logger.warning('Looks like a phone number is invalid')
 
     db.session.delete(snipe)
     db.session.commit()

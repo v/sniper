@@ -2,6 +2,7 @@
 {% block title %} Success | {% endblock %}
 {% block content %}
     <div class="alert alert-success">
-        Got it! I'll notify you at {{ form.phone_number.data | safe }}, {{ form.email.data | safe }} when your class opens up.
+        Got it! I'll notify you at {{ form.email.data | safe }} when your class opens up.
     </div>
+    {% include '_faq.html' %}
 {% endblock %}

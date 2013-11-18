@@ -16,29 +16,29 @@ class Snipe(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     @classmethod
-    def create(cls, phone_number, email, subject, course_number, section):
+    def create(cls, email, subject, course_number, section):
         """ Creates a snipe, and its corresponding user if they don't already exist"""
         # see if the user exists already
-        user = User.query.filter_by(phone_number=phone_number, email=email).first()
+        user = User.query.filter_by(email=email).first()
 
         if not user:
-            return Snipe(phone_number, email, subject, course_number, section)
+            return Snipe(email, subject, course_number, section)
 
         # see if the snipe exists already
         snipe = Snipe.query.filter_by(user=user, subject=subject, course_number=course_number, section=section).first()
         if not snipe:
-            return Snipe(phone_number, email, subject, course_number, section)
+            return Snipe(email, subject, course_number, section)
 
         return snipe
 
 
 
-    def __init__(self, phone_number, email, subject, course_number, section):
-        user = User.query.filter_by(phone_number=phone_number, email=email).first()
+    def __init__(self, email, subject, course_number, section):
+        user = User.query.filter_by(email=email).first()
         if user:
             self.user = user
         else:
-            user = User(email, phone_number)
+            user = User(email)
         
         self.subject = subject
         self.course_number = course_number
@@ -57,11 +57,10 @@ class User(db.Model):
     snipes = db.relationship('Snipe', backref='user')
 
     def __init__(self, email=None, phone_number=None):
-        if not email and not phone_number:
-            raise Exception('I don\'t have a phone number or an email for a user')
+        if not email:
+            raise Exception('I don\'t have an email for a user')
 
         self.email = email
-        self.phone_number = phone_number.lstrip('+1')
 
     def __repr__(self):
-        return '(%s - %s)' % (self.email, self.phone_number)
+        return '(%s)' % (self.email)

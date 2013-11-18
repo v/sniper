@@ -5,9 +5,8 @@ from flask import Flask, render_template, request
 from wtforms import Form, TextField, validators
 from wtforms.validators import StopValidation
 from models import Snipe, db, User
-from twilio.rest import TwilioRestClient
 from flaskext.mail import Mail
-from secrets import mail_username, mail_password, twilio_account, twilio_token
+from secrets import mail_username, mail_password
 from soc import Soc
 from werkzeug.contrib.fixers import ProxyFix
 import re
@@ -35,29 +34,12 @@ app.config['MAIL_PASSWORD'] = mail_password
 
 mail = Mail(app)
 
-# Set up a twilio client for sending texts out
-client = TwilioRestClient(account=twilio_account, token=twilio_token)
-
-
 class SnipeForm(Form):
     """ Represents the Snipe form on the homepage. """
-    email = TextField('Email', [validators.Email()])
-    phone_number = TextField('Phone Number', [validators.Length(min=9, max=12), validators.NumberRange()])
+    email = TextField('Email', [validators.Email(), validators.Required()])
     subject = TextField('Subject')
     course_number = TextField('Course Number', [validators.Length(min=2, max=4), validators.NumberRange()])
     section = TextField('Section', [validators.Length(min=1, max=4)])
-
-    def validate_email(form, field):
-        """ Checks that either the phone number or the email is set"""
-        if form.email.data and form.phone_number.data:
-            return True
-        elif form.phone_number.data:
-            form.email.errors[:] = []
-            return True
-        elif form.email.data:
-            form.phone_number.errors[:] = []
-            return True
-        raise StopValidation('You must either enter a phone number or an email address.')
 
     def validate_subject(form, field):
         if not form.subject.data.isdigit():
@@ -82,9 +64,7 @@ class SnipeForm(Form):
     def save(self):
         """ Saves to SQLAlchemy User and Snipe models """
 
-        # Remove '+1's from phone numbers
-        self.phone_number.data = self.phone_number.data.lstrip('+1')
-        snipe = Snipe.create(self.phone_number.data, self.email.data, self.subject.data, self.course_number.data, self.section.data)
+        snipe = Snipe.create(self.email.data, self.subject.data, self.course_number.data, self.section.data)
 
         db.session.add(snipe)
         db.session.commit()
@@ -107,45 +87,9 @@ def home():
 
     return render_template('home.html', form=form, subjects=subjects)
 
-@app.route('/twilio_callback', methods=['GET', 'POST'])
-def twilio_callback():
-    """ Handles the callback from twilio """
-    course_info = request.form['Body']
-
-    # Regex to search for subject:course_num:section in the text message.
-    m = re.search('([\w\d]+):([\w\d]+):([\w\d]+)', course_info)
-    if m:
-        subject = m.group(1)
-        course_number = m.group(2)
-        section = m.group(3)
-
-        # Twilio always puts +1s at the beginning of phone numbers
-        phone_number = request.form['From'].lstrip('+1')
-
-        # check if the user already exists
-        user = User.query.filter_by(phone_number=phone_number).first()
-        if user:
-            email = user.email
-        else:
-            email = None
-
-
-        snipe = Snipe.create(phone_number, email, subject, course_number, section)
-
-        db.session.add(snipe)
-        db.session.commit()
-
-        # Notify the user via text message.
-        text = "I'm on it. Watching %s:%s:%s for you." % (subject, course_number, section)
-        client.sms.messages.create(to=snipe.user.phone_number, from_="+17326384545", body=text)
-
-        return '<Response></Response'
-    else:
-        # log errors.
-        app.logger.error('There is sadness with text messages')
-        app.logger.error('Message: %s Other %s' % (request.form['Body'], str(request.form)))
-
-        return '<Response></Response>'
+@app.route('/faq', methods=['GET'])
+def faq():
+    return render_template('faq.html')
 
 @app.route('/test', methods=['GET', 'POST'])
 def ajaxtest():

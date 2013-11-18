@@ -33,3 +33,7 @@ input[type="text"] {
 #sniper-test {
     margin: 10px;
 }
+
+ol li b {
+    display: block;
+}
