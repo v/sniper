@@ -74,8 +74,6 @@ class SnipeForm(Form):
 def home():
     """ Handles the home page rendering."""
 
-    return render_template('down.html')
-
     soc = Soc()
     subjects = soc.get_subjects()
 
