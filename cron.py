@@ -77,7 +77,7 @@ def notify(snipe, index):
         email_text = 'A course (%s) that you were watching looks open. Its index number is %s. Click the link below to register for it!\n\n %s \n\n If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, index, register_url, url)
 
         # send out the email
-        message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER, bcc=["vaibhav2614+sniper@gmail.com"])
+        message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER)
         message.body = email_text
         message.add_recipient(snipe.user.email)
         message.add_recipient(snipe.user.email)
