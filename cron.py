@@ -74,7 +74,7 @@ def notify(snipe, index):
 
         register_url = 'https://sims.rutgers.edu/webreg/editSchedule.htm?login=cas&semesterSelection=92014&indexList=%s' % (index)
 
-        email_text = 'A course (%s) that you were watching looks open. Its index number is %s. Click the link below to register for it!\n\n %s \n\n If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@vverma.net' % (course, index, register_url, url)
+        email_text = 'A course (%s) that you were watching looks open. Its index number is %s. Click the link below to register for it!\n\n %s \n\n If you don\'t get in, visit this URL: \n\n %s \n\n to continue watching it.\n\n Send any feedback to sniper@rutgers.io' % (course, index, register_url, url)
 
         # send out the email
         message = Message('[Course Sniper](%s) is open' %(course), sender=EMAIL_SENDER)
