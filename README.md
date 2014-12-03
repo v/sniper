@@ -27,4 +27,4 @@ When you input a snipe, you should see it under `db/production.db` in the user a
 If you run cron.py (`python cron.py`), all the courses in the database will be checked and the corresponding users will be notified if the class is open.
 You can run cron.py in a cronjob to automatically check for course openings. 
 
-Example: ` */15 * * * * /path/to/virtualenv/bin/python cron.py ` will automatically check for openings every 10 minutes.
+Example: Put ` */15 * * * * /path/to/virtualenv/bin/python cron.py ` into `crontab -e` to automatically check for openings every 15 minutes.
