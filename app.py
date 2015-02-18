@@ -80,7 +80,7 @@ def home():
     form = SnipeForm(request.form)
     if request.method == 'POST' and form.validate():
         form.save()
-        return render_template('success.html', form=form)
+        return render_template('down.html', form=form)
     if not request.form:
         # this trick allows us to prepopulate entries using links sent out in emails.
         form = SnipeForm(request.args)
