@@ -16,7 +16,7 @@ You can check out the [live version](http://sniper.vverma.net) if you want to si
 You can setup an instance of sniper on your own Linux machine.
 
 1. Start by setting up a [python virtualenv](http://lmgtfy.com/?q=setting+up+a+python+virtualenv)
-2. Install the python packages in `requirements.txt` by running `pip install -r requiremnents.txt`.
+2. Install the python packages in `requirements.txt` by running `pip install -r requirements.txt`.
 3. Create a `db/` directory in the `sniper` folder (alongside `app.py`).
 4. Create empty database tables by running `python -c "from models import db; db.create_all()"`
 5. Copy `secrets-example.py` to `secrets.py`. Edit the mail_username and mail_password fields to your SendGrid account details (if you want sniper to send you email).
