@@ -3,6 +3,8 @@
 <html>
     <head>
         <title> {% block title %} {% endblock %}Rutgers Course Sniper </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" style="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
         <link rel="stylesheet" style="text/css" href="{{ url_for('static', filename='css/animate.css') }}" />
         <link rel="stylesheet" style="text/css" href="{{ url_for('static', filename='css/sniper.css') }}" />
@@ -35,7 +37,7 @@
 			<br>
 			Created by <a href="http://vverma.net"> Vaibhav Verma</a>, inspired by <a href="http://abe.is">Abe Stanway</a>, maintained by <a href="http://github.com/adispen"> Aedan Dispenza</a>, web design by <a href="http://jpaik.me"> James Paik</a>, and domain provided by <a href="https://twitter.com/samgdf"> Sam Goldfield</a>. </footer>
         </div>
-        <a href="https://github.com/v/sniper"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+        <a href="https://github.com/v/sniper"><img id="github" style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>

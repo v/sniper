@@ -81,8 +81,27 @@ ol li b {
     display: block;
 }
 
+
 @media(max-width:767px){
   input[type="text"] {
       width: 100%;
   }
+  .page-header h1{
+    font-size: 2em;
+  }
+  .content{
+    padding-top: 0px;
+    width:100%;
+  }
+  footer{
+    font-size:14px;
+  }
+  #github{
+    width:100px;
+  }
+  /*Change font size and position on mobile b/c it gets cut off*/
+  ::-webkit-input-placeholder { font-size: 14px; padding-top:3px; }
+  ::-moz-placeholder { font-size: 14px; padding-top:3px; }
+  :-ms-input-placeholder { font-size: 14px; padding-top:3px; }
+  input:-moz-placeholder { font-size: 14px; padding-top:3px; }
 }
