@@ -1,13 +1,44 @@
-.subhead h1 {
-    font-size: 54px;
-    color: #333;
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900);
+body{
+  font-family: "Roboto", sans-serif;
+  font-size: 1.75em;
+  letter-spacing: .013em;
 }
 
-.jumbotron h1 {
-    margin-bottom: 9px;
-    font-weight: bold;
-    letter-spacing: -1px;
-    line-height: 1;
+a{
+  -webkit-transition: all ease 0.25s;
+  transition: all ease 0.25s;
+}
+.btn{
+  -webkit-transition: all ease 0.25s;
+  transition: all ease 0.25s;
+}
+.btn:hover{
+  -webkit-transition: all ease 0.25s;
+  transition: all ease 0.25s;
+}
+
+.btn-danger{
+  font-size:1.15em;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+}
+
+.page-header h1{
+  font-size: 4em;
+  font-weight: 700;
+}
+.page-header h1 a{
+  text-transform: none;
+  text-decoration: none;
+  color: inherit;
+}
+
+.inLine{
+  display: -moz-inline-stack;
+   display: inline-block;
+   zoom: 1;
+   *display: inline;
 }
 
 .navbar {
@@ -19,15 +50,27 @@
 }
 
 span.red {
-    color: #cc0000;
+    color: #cc0033;
 }
 
 footer {
+    padding: 10px 0px;
     font-size: 16px;
 }
 
 input[type="text"] {
-    width: 300px;
+    width: 100%;
+    padding: 5px 5px;
+}
+
+label{
+    padding: 5px 0px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+dl .alert{
+  margin-bottom: 5px;
+  padding: 10px;
 }
 
 #sniper-test {
@@ -36,4 +79,10 @@ input[type="text"] {
 
 ol li b {
     display: block;
+}
+
+@media(max-width:767px){
+  input[type="text"] {
+      width: 100%;
+  }
 }

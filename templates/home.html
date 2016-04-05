@@ -4,14 +4,20 @@
         var subjects = {{ subjects|tojson|safe }};
     </script>
     {% from "_formhelpers.html" import render_field %}
-    <p> Enter your details below, and I'll notify you when your class opens up. Sniper is currently watching courses for Spring 2016 on the Rutgers New Brunswick campus. </p>
-    <form method=post action="/">
-        <dl>
-            {{ render_field(form.email) }}
-            {{ render_field(form.subject, placeholder="Department Number. Ex: '640' for Math", autocomplete="off") }}
-            {{ render_field(form.course_number) }}
-            {{ render_field(form.section) }}
-        </dl>
-        <button class="btn btn-primary" type="submit">Snipe</button>
-    </form>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <p class="text-center animated fadeIn"> Enter your details below, and I'll notify you when your class opens up. Sniper is currently watching courses for Fall 2016 on the Rutgers New Brunswick campus. </p>
+      </div>
+      <div class="col-md-4 col-md-offset-4">
+        <form method=post action="/">
+            <dl class="animated fadeIn">
+                {{ render_field(form.email, placeholder="you@example.com") }}
+                {{ render_field(form.subject, placeholder="Department Number. Ex: '640' for Math", autocomplete="off") }}
+                {{ render_field(form.course_number, placeholder="Ex: '151' for Calculus I") }}
+                {{ render_field(form.section) }}
+            </dl>
+            <div class="text-center"><button class="btn btn-danger animated fadeIn" type="submit">Snipe</button></div>
+        </form>
+      </div>
+    </div>
 {% endblock %}

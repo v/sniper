@@ -6,10 +6,10 @@ $(function() {
             if(part)
                 result += part[0].toUpperCase() + part.substring(1).toLowerCase() + " ";
         });
-
         result += "("+ subject.code+")";
         return result;
     }
+
     $('#subject').typeahead({
         source: function(part) {
             results = [];
@@ -35,7 +35,7 @@ $(function() {
         var that = $(this);
         that.button('loading');
         $.ajax({
-            url: '/test', 
+            url: '/test',
             success: function(response) {
                 that.button('reset');
                 if(response.success) {
