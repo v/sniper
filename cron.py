@@ -24,37 +24,40 @@ def poll(subject, result=False):
 
     # build information about which courses/sections are currently open.
     open_data = {}
-    for course in courses:
-        course_number = course['courseNumber']
+    if courses is not None:
+        for course in courses:
+            course_number = course['courseNumber']
 
-        # remove leading zeroes
-        if course_number.isdigit():
-            course_number = str(int(course_number))
+            # remove leading zeroes
+            if course_number.isdigit():
+                course_number = str(int(course_number))
 
-        open_data[course_number] = []
-        for section in course['sections']:
-            section_number = section['number']
-            if section_number.isdigit():
-                section_number = str(int(section_number))
-            # section is open
-            if section['openStatus']:
-                open_data[course_number].append(Section(section_number, section['index']))
+            open_data[course_number] = []
+            for section in course['sections']:
+                section_number = section['number']
+                if section_number.isdigit():
+                    section_number = str(int(section_number))
+                # section is open
+                if section['openStatus']:
+                    open_data[course_number].append(Section(section_number, section['index']))
 
-    # all of these course numbers are open
-    open_courses = [course for course, open_sections in open_data.iteritems() if open_sections]
+        # all of these course numbers are open
+        open_courses = [course for course, open_sections in open_data.iteritems() if open_sections]
 
-    if result:
-        return open_data
+        if result:
+            return open_data
 
-    if open_courses:
-        # Notify people that were looking for these courses
-        snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses), Snipe.subject==str(subject))
-        for snipe in snipes:
-            for section in open_data[snipe.course_number]:
-                if section.number == snipe.section:
-                    notify(snipe, section.index)
+        if open_courses:
+            # Notify people that were looking for these courses
+            snipes = Snipe.query.filter(Snipe.course_number.in_(open_courses), Snipe.subject==str(subject))
+            for snipe in snipes:
+                for section in open_data[snipe.course_number]:
+                    if section.number == snipe.section:
+                        notify(snipe, section.index)
+        else:
+            app.logger.warning('Subject "%s" has no open courses' % (subject))
     else:
-        app.logger.warning('Subject "%s" has no open courses' % (subject))
+        app.logger.warning('Subject "%s" is not valid' % (subject))
 
 def notify(snipe, index):
     """ Notify this snipe that their course is open"""
