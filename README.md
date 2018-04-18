@@ -1,3 +1,5 @@
+## THE SNIPER REPO HAS MOVED TO https://github.com/Rui-Zhang1997/sniper
+
 # Introduction
 
 [Sniper](http://sniper.rutgers.io) is an application that interfaces with the [Rutgers Schedule of Classes](http://sis.rutgers.edu/soc/) and notifies users via email/text when a course opens up.
